@@ -29,15 +29,8 @@ public class EnrollCtrl {
                 throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
             }
         }
-        for (CSE o : courses) {
-            for (CSE o2 : courses) {
-                if (o == o2)
-                    continue;
-                if (o.getExamTime().equals(o2.getExamTime()))
-                    throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
-                }
-        }
 
+        checkConflictExamDate(courses);
         checkDuplicateCourse(courses);
         checkGPALimit(courses, s);
     }
@@ -59,6 +52,17 @@ public class EnrollCtrl {
                     continue;
                 if (o.getCourse().equals(o2.getCourse()))
                     throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice", o.getCourse().getName()));
+            }
+        }
+    }
+
+    public void checkConflictExamDate(List<CSE> courses) throws EnrollmentRulesViolationException {
+        for (CSE o : courses) {
+            for (CSE o2 : courses) {
+                if (o == o2)
+                    continue;
+                if (o.getExamTime().equals(o2.getExamTime()))
+                    throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
             }
         }
     }
