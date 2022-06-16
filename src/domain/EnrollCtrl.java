@@ -39,14 +39,11 @@ public class EnrollCtrl {
     }
 
     public void checkGPALimit(List<CSE> courses, Student s) throws EnrollmentRulesViolationException {
-        int unitsRequested = 0;
-        for (CSE o : courses)
-            unitsRequested += o.getCourse().getUnits();
-        double gpa = s.getGPA();
-        if ((gpa < 12 && unitsRequested > 14) ||
-                (gpa < 16 && unitsRequested > 16) ||
+        int unitsRequested = courses.stream().mapToInt(o -> o.getCourse().getUnits()).sum();
+        if ((s.getGPA() < 12 && unitsRequested > 14) ||
+                (s.getGPA() < 16 && unitsRequested > 16) ||
                 (unitsRequested > 20))
-            throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", unitsRequested, gpa));
+            throw new EnrollmentRulesViolationException(String.format("Number of units (%d) requested does not match GPA of %f", unitsRequested, s.getGPA()));
         for (CSE o : courses)
             s.takeCourse(o.getCourse(), o.getSection());
     }

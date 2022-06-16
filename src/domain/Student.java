@@ -60,10 +60,8 @@ public class Student {
 		double points = 0;
 		int totalUnits = 0;
 		for (Map.Entry<Term, Map<Course, Double>> tr : transcript.entrySet()) {
-			for (Map.Entry<Course, Double> r : tr.getValue().entrySet()) {
-				points += r.getValue() * r.getKey().getUnits();
-				totalUnits += r.getKey().getUnits();
-			}
+			points = tr.getValue().entrySet().stream().mapToDouble(r -> r.getValue()*r.getKey().getUnits()).sum();
+			totalUnits = tr.getValue().keySet().stream().mapToInt(Course::getUnits).sum();
 		}
 		return points / totalUnits;
 	}
