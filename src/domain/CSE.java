@@ -41,4 +41,8 @@ public class CSE {
 	public boolean hasExamTimeConflict(CSE other){
 		return getExamTime().equals(other.getExamTime());
 	}
+
+	public boolean isSameCourse(CSE other){
+		return getCourse().equals(other.getCourse());
+	}
 }

@@ -1,7 +1,6 @@
 package domain;
 
 import java.util.List;
-import java.util.Map;
 
 import domain.exceptions.EnrollmentRulesViolationException;
 
@@ -30,7 +29,7 @@ public class EnrollCtrl {
             for (CSE o2 : courses) {
                 if (o == o2)
                     continue;
-                if (o.getCourse().equals(o2.getCourse()))
+                if (o.isSameCourse(o2))
                     throw new EnrollmentRulesViolationException(String.format("%s is requested to be taken twice", o.getCourse().getName()));
             }
         }
