@@ -7,19 +7,11 @@ import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
 	public void enroll(Student s, List<CSE> courses) throws EnrollmentRulesViolationException {
-        Map<Term, Map<Course, Double>> transcript = s.getTranscript();
         for (CSE o : courses) {
             if (s.hasPassed(o.getCourse()))
                 throw new EnrollmentRulesViolationException(String.format("The student has already passed %s", o.getCourse().getName()));
         }
-        for (CSE o : courses) {
-            List<Course> prereqs = o.getCourse().getPrerequisites();
-            for (Course pre : prereqs) {
-                if (!s.hasPassed(pre)) {
-                    throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
-                }
-            }
-        }
+        checkPassedPrerequisites(courses, s);
 
         checkConflictExamDate(courses);
         checkDuplicateCourse(courses);
@@ -55,6 +47,17 @@ public class EnrollCtrl {
                     continue;
                 if (o.getExamTime().equals(o2.getExamTime()))
                     throw new EnrollmentRulesViolationException(String.format("Two offerings %s and %s have the same exam time", o, o2));
+            }
+        }
+    }
+
+    private void checkPassedPrerequisites(List<CSE> courses, Student s) throws EnrollmentRulesViolationException {
+        for (CSE o : courses) {
+            List<Course> prereqs = o.getCourse().getPrerequisites();
+            for (Course pre : prereqs) {
+                if (!s.hasPassed(pre)) {
+                    throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
+                }
             }
         }
     }
