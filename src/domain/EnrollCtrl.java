@@ -7,12 +7,8 @@ import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
 	public void enroll(Student s, List<CSE> courses) throws EnrollmentRulesViolationException {
-        for (CSE o : courses) {
-            if (s.hasPassed(o.getCourse()))
-                throw new EnrollmentRulesViolationException(String.format("The student has already passed %s", o.getCourse().getName()));
-        }
+        checkDuplicatePassedCourse(courses, s);
         checkPassedPrerequisites(courses, s);
-
         checkConflictExamDate(courses);
         checkDuplicateCourse(courses);
         checkGPALimit(courses, s);
@@ -59,6 +55,13 @@ public class EnrollCtrl {
                     throw new EnrollmentRulesViolationException(String.format("The student has not passed %s as a prerequisite of %s", pre.getName(), o.getCourse().getName()));
                 }
             }
+        }
+    }
+
+    public void checkDuplicatePassedCourse(List<CSE> courses, Student s) throws EnrollmentRulesViolationException {
+        for (CSE o : courses) {
+            if (s.hasPassed(o.getCourse()))
+                throw new EnrollmentRulesViolationException(String.format("The student has already passed %s", o.getCourse().getName()));
         }
     }
 
