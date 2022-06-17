@@ -1,24 +1,24 @@
 package domain;
 import java.util.Date;
 
-public class CSE {
+public class Offering {
 	private Course course;
 	private int section;
 	private Date examDate;
 
-	public CSE(Course course) {
+	public Offering(Course course) {
 		this.course = course;
 		this.section = 1;
 		this.examDate = null;
 	}
 
-	public CSE(Course course, Date examDate) {
+	public Offering(Course course, Date examDate) {
 		this.course = course;
 		this.section = 1;
 		this.examDate = examDate;
 	}
 
-	public CSE(Course course, Date examDate, int section) {
+	public Offering(Course course, Date examDate, int section) {
 		this.course = course;
 		this.section = section;
 		this.examDate = examDate;
@@ -38,11 +38,11 @@ public class CSE {
 
 	public int getSection() { return section; }
 
-	public boolean hasExamTimeConflict(CSE other){
+	public boolean hasExamTimeConflict(Offering other){
 		return getExamTime().equals(other.getExamTime());
 	}
 
-	public boolean isSameCourse(CSE other){
+	public boolean isSameCourse(Offering other){
 		return getCourse().equals(other.getCourse());
 	}
 }
