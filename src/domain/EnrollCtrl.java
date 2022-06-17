@@ -5,14 +5,14 @@ import java.util.List;
 import domain.exceptions.EnrollmentRulesViolationException;
 
 public class EnrollCtrl {
-	public void enroll(Student s, List<Offering> courses) throws EnrollmentRulesViolationException {
-        checkDuplicatePassedCourse(courses, s);
-        checkPassedPrerequisites(courses, s);
-        checkConflictExamDate(courses);
-        checkDuplicateCourse(courses);
-        checkGPALimit(courses, s);
+	public void enroll(Student s, List<Offering> offerings) throws EnrollmentRulesViolationException {
+        checkDuplicatePassedCourse(offerings, s);
+        checkPassedPrerequisites(offerings, s);
+        checkConflictExamDate(offerings);
+        checkDuplicateCourse(offerings);
+        checkGPALimit(offerings, s);
 
-        for (Offering o : courses)
+        for (Offering o : offerings)
             s.takeCourse(o.getCourse(), o.getSection());
     }
 
